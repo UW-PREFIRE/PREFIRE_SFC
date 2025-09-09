@@ -11,7 +11,9 @@ This code is released under the terms of this [LICENSE](LICENSE).  The version o
 Python version 3.6+ is required.  A recent MatLab software version (R2020b or
 newer) and run-time license are also required.
 
-The associated (Python-based) git repositories ['PREFIRE_PRD_GEN'](https://github.com/UW-PREFIRE/PREFIRE_PRD_GEN) and (Python- and Fortran-based) ['PREFIRE_pyPCRTM'](https://github.com/UW-PREFIRE) and ['PREFIRE_PCRTM_V3.4'](https://github.com/UW-PREFIRE) are also required for the proper operation of this package.
+The associated git repository (Python- and Fortran-based) ['PREFIRE_PCRTM_V3.4'](https://github.com/UW-PREFIRE/PREFIRE_PCRTM_V3.4) is also required for the proper operation of this package.
+
+### Note that the PREFIRE_PCRTM_V3.4 package must be properly compiled with a Fortran compiler that is compatible with the MatLab release being used (see the [supported/compatible compiler section on the MatLab website](https://www.mathworks.com/support/requirements/supported-compilers-linux.html)).
 
 ## Python Environment Setup
 
@@ -25,7 +27,12 @@ conda activate for_PREFIRE_SFC;
 conda install -c conda-forge gfortran=8.5;
 ```
 
-The location of 'PREFIRE_pyPCRTM' depends on the value of the user's PYTHONPATH and/or sys.path -- for example, one could simply add each of those git repositories' local root Python source code directory to PYTHONPATH. Operationally, however, this package uses symbolic links to those git repositories' local root Python source code directories (or full copies of the same) in the source/ directory.
+Create a symbolic link to the particular copy of PREFIRE_PCRTM_V3.4 that is compiled with Fortran compiler version that is supported/compatible version with the MatLab release being used.  For example:
+
+```
+cd source/python;
+ln -s ../../../PREFIRE_PCRTM_V3.4_gfortran_8.5 PREFIRE_PCRTM_V3.4;
+```
 
 ## Environment Variables
 
@@ -73,11 +80,29 @@ SRF_DISAMBIG_STR  :  identifier string that disambiguates which SRF file(s) shou
 
 # Running the test script(s)
 
-## Obtain and unpack ancillary and test data
+## Obtain and unpack any ancillary data:
 
-None (for this version).
+### Spectral Response Functions (SRFs)
 
-### Prepare the test input and output directories:
+Spectral Response Function data (v13_2024-09-15) for the two Thermal InfraRed Spectrometer (TIRS) instruments aboard the dual NASA PREFIRE mission CubeSats are needed for this software package.  A zip-archive file containing that data can be downloaded from [here](https://zenodo.org/records/16638853).
+
+To install the downloaded SRF data:
+
+(1) Extract (unzip) the two SRF files from the downloaded zip-archive file.
+
+(2) Put them both in the `dist/ancillary/` directory.
+
+### Additional ancillary data
+
+Various additional ancillary data files are needed for this software package.  A zip-archive file containing that data can be downloaded from [here](https://zenodo.org/records/17081695).
+
+To install the downloaded ancillary data:
+
+(1) If needed, copy the downloaded zip-archive file to the `dist/` subdirectory within this software package.  Then change directory to that same `dist/` subdirectory within this software package.
+
+(2) Extract (unzip) the downloaded zip-archive file, which should automatically put the extracted files into the `ancillary/` subdirectory.
+
+## Prepare the test input and output directories:
 
 `cd test;`
 
@@ -105,4 +130,4 @@ Edit `my-run.sh` as needed (e.g., change input file names)
 
 The output file(s) will be in `test/outputs/`
 
-## _The creation of this code was supported by NASA, as part of the PREFIRE (Polar Radiant Energy in the Far-InfraRed Experiment) CubeSat mission._
+### _The creation of this code was supported by NASA, as part of the PREFIRE (Polar Radiant Energy in the Far-InfraRed Experiment) CubeSat mission._
